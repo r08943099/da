@@ -1,0 +1,13 @@
+NAME: easy
+TYPE: TSP
+COMMENT: 14-Staedte in Burma (Zaw Win)
+DIMENSION : 4
+EDGE_WEIGHT_TYPE: GEO
+EDGE_WEIGHT_FORMAT: FUNCTION 
+DISPLAY_DATA_TYPE: COORD_DISPLAY
+NODE_COORD_SECTION
+   1  0       0
+   2  0       1
+   3  0       2
+   4  0       3
+EOF
