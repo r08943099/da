@@ -44,7 +44,7 @@ struct DA
     Replica             _replicaArray[replicaNum];
 };
 
-void DigitalAnnealer(struct DA*);
+void DigitalAnnealer(struct DA*, Node nodeArray[citysize]);
 // void reset(struct DA* da);
 // void calculate_distnace(struct DA*);
 // double calculate_energy(struct DA*);

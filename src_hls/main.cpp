@@ -23,6 +23,7 @@ int main(int argc, char** argv)
     output.open("out.txt", ios::out);
 
     DA da;
+
     string str;
     while(getline(input,str)){
         ClearAllSpace(str);
@@ -31,24 +32,27 @@ int main(int argc, char** argv)
         string data = str.substr(idx+1); 
         if(dataType == "NODE_COORD_SECTION")break;
     }
+
+
+    Node nodeArray[citysize] = {};
     for(int i = 0; i < citysize; i++){
         input >> str;//neglect name
         input >> str;
-        da._nodeArray[i]._x = stod(str);
+        nodeArray[i]._x = stod(str);
         input >> str;
-        da._nodeArray[i]._y = stod(str);
+        nodeArray[i]._y = stod(str);
     }
 
 
-    DigitalAnnealer(&da);
-    cout << "Result :" << endl;
-    for(int i = 0; i < citysize; i++){
-        for(int j = 0; j < citysize; j++){
-            cout << da._best_qubit_matrix[i][j] << " "; 
-        }
-        cout << endl;
-    }
-    cout << "Best Cost = "<< da._best_energy << endl;
+    DigitalAnnealer(&da, nodeArray);
+     cout << "Result :" << endl;
+     for(int i = 0; i < citysize; i++){
+         for(int j = 0; j < citysize; j++){
+             cout << da._best_qubit_matrix[i][j] << " ";
+         }
+         cout << endl;
+     }
+     cout << "Best Cost = "<< da._best_energy << endl;
     
 
     //initial patameter

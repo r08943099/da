@@ -19,7 +19,9 @@ int main(int argc, char** argv)
 {
     srand( time(NULL) );
     fstream input, output;
-    input.open("burma14.tsp", ios::in);
+    //input.open("burma14.tsp", ios::in);
+    //input.open("ulysses16.tsp", ios::in);
+    input.open("ulysses22.tsp", ios::in);
     output.open("out.txt", ios::out);
 
     DA da;
@@ -40,7 +42,22 @@ int main(int argc, char** argv)
     }
 
 
-    DigitalAnnealer(&da);
+    double rep_best_energy_list[repeat] = {};
+    double sum_best_energy = 0;
+    double rep_best_energy = 10000;
+    bool   rep_best_qubit_matrix[citysize][citysize] = {};
+    for(int rep = 0; rep < repeat; rep++){//repeat this code for x times    
+        cout << "=============================== Repeat this code : " << rep << " ================================" <<endl;   
+        DigitalAnnealer(&da);
+        sum_best_energy += da._best_energy;
+        if(da._best_energy < rep_best_energy){
+            rep_best_energy = da._best_energy;
+            for(int i = 0; i < citysize; i++){
+                for(int j = 0; j < citysize; j++){
+                    rep_best_qubit_matrix[i][j] = da._best_qubit_matrix[i][j];
+                }       
+            }
+        }
     cout << "Result :" << endl;
     for(int i = 0; i < citysize; i++){
         for(int j = 0; j < citysize; j++){
@@ -48,8 +65,23 @@ int main(int argc, char** argv)
         }
         cout << endl;
     }
-    cout << "Best Cost = "<< da._best_energy << endl;
+    cout << "Best Cost = "<< da._best_energy << endl;         
+    }    
     
+    cout << "============= Print Result =============" << endl;
+    cout << "-------------------------" << endl;
+    cout << "The Best Cost : " << rep_best_energy << endl;
+    cout << "The Average Cost : " << sum_best_energy/repeat << endl;
+    cout << "The Best Qubit : " << endl;
+    for(int i = 0; i < citysize; i++){
+        for(int j = 0; j < citysize; j++){
+            cout << rep_best_qubit_matrix[i][j] << " ";
+        }
+        cout << endl;
+    }
+    cout << "-------------------------" << endl;
+    cout << "=========================================" << endl;
+
 
     //initial patameter
     // for(int i = 0; i < citysize; i++){

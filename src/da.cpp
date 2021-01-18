@@ -23,7 +23,7 @@ void reset(struct DA* da){
     da -> _best_energy = 10000;
     //for each replica
     for(int i = 0; i < replicaNum; i++){
-        da -> _replicaArray[i]._beta = beta * pow(cooling_rate,i); 
+        da -> _replicaArray[i]._beta = beta / pow(cooling_rate,i); 
         for(int j = 0; j < citysize; j++){
             for(int k=0; k < citysize; k++){
                 da ->_replicaArray[i]._qubit_matrix[j][k] = 0;//all replica set to zero
@@ -66,8 +66,8 @@ double calculate_energy(struct DA* da)
         HB += penalty_funciotn(Bi);
         HC += penalty_funciotn(Ci);
     }   
-    //H = da -> HA + da -> _A*(HB + HC);
-    H = HA + _A*(HB + HC);
+    //H = da -> HA + da -> da -> _A*(HB + HC);
+    H = HA + da -> _A*(HB + HC);
     return H;
 }
 
@@ -80,6 +80,15 @@ void calculate_distance(struct DA* da)
             sqrt(pow((da -> _nodeArray[i]._x - da -> _nodeArray[j]._x),2) + pow((da -> _nodeArray[i]._y - da -> _nodeArray[j]._y),2));        
         }
     }
+    
+    double longest_distnace = 0;
+    for(int i = 0; i < citysize; i++){
+        for(int j=0; j < citysize; j++){
+            if(longest_distnace < da->_distance_matrix[i][j]) longest_distnace = da->_distance_matrix[i][j];
+        }
+    }    
+    da->_A = longest_distnace + 10;
+
 }
 
 double calculate_delta_energy(struct DA* da, int i, int j)
@@ -101,8 +110,8 @@ double calculate_delta_energy(struct DA* da, int i, int j)
     }
     HB = penalty_funciotn(Bi+sgn) - penalty_funciotn(Bi); 
     HC = penalty_funciotn(Ci+sgn) - penalty_funciotn(Ci);   
-    //H = sgn * HA + da -> _A*(HB + HC);
-    H = sgn * HA + _A*(HB + HC);
+    //H = sgn * HA + da -> da -> _A*(HB + HC);
+    H = sgn * HA + da -> _A*(HB + HC);
     return H;
 }
 
@@ -205,7 +214,7 @@ bool replica(struct DA* da){
 }
 
 
-bool replica_exchange_ADB(struct DA* da, int replicaIdx1, int replicaIdx2)
+bool replica_exchangeda_ADB(struct DA* da, int replicaIdx1, int replicaIdx2)
 {
     double delta_beta = da -> _replicaArray[replicaIdx1]._beta - da -> _replicaArray[replicaIdx2]._beta;
     double delta_energy = da -> _replicaArray[replicaIdx1]._energy - da -> _replicaArray[replicaIdx2]._energy;
@@ -221,7 +230,7 @@ bool replica_exchange_ADB(struct DA* da, int replicaIdx1, int replicaIdx2)
 }
 
 void replica_exchange(struct DA* da, int replicaIdx1, int replicaIdx2){
-    bool exchange = replica_exchange_ADB(da,replicaIdx1, replicaIdx2);
+    bool exchange = replica_exchangeda_ADB(da,replicaIdx1, replicaIdx2);
     bool temp_qubit_matrix[citysize][citysize];
     double temp_energy = 0;
     if(exchange){

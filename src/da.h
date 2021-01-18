@@ -7,13 +7,12 @@
 // #include "ap_fixed.h"
 
 using namespace std;
-#define citysize 14
-#define iteration 1000   //for each setting
-#define repeat    1  //for repeat this code
-#define replicaNum 100
-#define _A 10
-#define beta 0.02
-#define cooling_rate 0.99
+#define citysize 22
+#define iteration 500  //for each setting
+#define repeat    10  //for repeat this code
+#define replicaNum 1000
+#define beta 0.00001
+#define cooling_rate 0.85
 #define _E_off_increment 1
 
 // struct Replica
@@ -35,7 +34,7 @@ struct DA
     Node                _nodeArray[citysize];
     double              _distance_matrix[citysize][citysize];
     bool                _current_qubit_matrix[citysize][citysize];
-    //double              _A;
+    double              _A;
     double              _E_off;
     //double              _E_off_increment;     
     double              _beta;
