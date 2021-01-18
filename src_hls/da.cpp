@@ -1,21 +1,21 @@
 #include "da.h"
 #include "math.h"
 
-// static ap_uint<32> lfsr=0;
+static ap_uint<32> lfsr=0;
 
-// unsigned int pseudo_random() {
-// #pragma HLS INLINE off
-//   if (lfsr == 0 )
-//     lfsr = 123;
-//   bool b_32 = lfsr.get_bit(32-32);
-//   bool b_22 = lfsr.get_bit(32-22);
-//   bool b_2 = lfsr.get_bit(32-2);
-//   bool b_1 = lfsr.get_bit(32-1);
-//   bool new_bit = b_32 ^ b_22 ^ b_2 ^ b_1;
-//   lfsr = lfsr >> 1;
-//   lfsr.set_bit(31, new_bit);
-//   return lfsr;
-// }
+unsigned int pseudo_random() {
+#pragma HLS INLINE off
+  if (lfsr == 0 )
+    lfsr = 123;
+  bool b_32 = lfsr.get_bit(32-32);
+  bool b_22 = lfsr.get_bit(32-22);
+  bool b_2 = lfsr.get_bit(32-2);
+  bool b_1 = lfsr.get_bit(32-1);
+  bool new_bit = b_32 ^ b_22 ^ b_2 ^ b_1;
+  lfsr = lfsr >> 1;
+  lfsr.set_bit(31, new_bit);
+  return lfsr;
+}
 
 void reset(struct DA* da){
     //for da
@@ -111,7 +111,7 @@ bool ADB(struct DA* da, double delta_energy)
 {
     delta_energy = delta_energy - da -> _E_off; // add or minus ?
     //an ramdom number[0,1)
-    double random0to1 = (double) rand() / (RAND_MAX + 1.0);
+    double random0to1 = (double) (pseudo_random()%100) / 100;
     double probabilty = exp(-delta_energy/ da -> _beta);
     double acceptance_probability;  
     if(probabilty < 1) acceptance_probability = probabilty;
@@ -129,7 +129,7 @@ bool random_choose_flip(bool candidate[citysize][citysize], int* flipx, int* fli
         }
     }
     if(candidatecount == 0) return false; //no cadicate;        
-    int ramdom_candidate = rand() % candidatecount;
+    int ramdom_candidate = pseudo_random() % candidatecount;
     //cout << "ramdom_candidate" << ramdom_candidate << endl;
     candidatecount = 0;
     for(int i = 0; i < citysize; i++){
@@ -210,7 +210,7 @@ bool replica_exchange_ADB(struct DA* da, int replicaIdx1, int replicaIdx2)
     double delta_beta = da -> _replicaArray[replicaIdx1]._beta - da -> _replicaArray[replicaIdx2]._beta;
     double delta_energy = da -> _replicaArray[replicaIdx1]._energy - da -> _replicaArray[replicaIdx2]._energy;
     //an ramdom number[0,1)
-    double random0to1 = (double) rand() / (RAND_MAX + 1.0);
+    double random0to1 = (double) (pseudo_random()%100) / 100;
     double probabilty = exp(delta_beta*delta_energy);
     double acceptance_probability;  
     if(probabilty < 1) acceptance_probability = probabilty;

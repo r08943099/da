@@ -4,11 +4,11 @@
 #include <iostream>
 #include <fstream>
 #include "node.h"
-// #include "ap_fixed.h"
+#include "typedefs.h"
 
 using namespace std;
 #define citysize 14
-#define iteration 1000   //for each setting
+#define iteration 100   //for each setting
 #define repeat    1  //for repeat this code
 #define replicaNum 100
 #define _A 10
