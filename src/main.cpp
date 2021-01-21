@@ -19,9 +19,11 @@ int main(int argc, char** argv)
 {
     srand( time(NULL) );
     fstream input, output;
+    input.open(argv[1], ios::in);
+    output.open(argv[2], ios::out);
     //input.open("burma14.tsp", ios::in);
     //input.open("ulysses16.tsp", ios::in);
-    input.open("ulysses22.tsp", ios::in);
+    //input.open("ulysses22.tsp", ios::in);
     output.open("out.txt", ios::out);
 
     DA da;

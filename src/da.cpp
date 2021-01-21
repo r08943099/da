@@ -33,8 +33,8 @@ void reset(struct DA* da){
 }
 
 int penalty_funciotn(int x){
-    x = (x == 0)?10:x-1; //if all is zero, give a critcal penalty
-    //x = x-1;
+    // x = (x == 0)?10:x-1; //if all is zero, give a critcal penalty
+    x = x-1;
     return pow(x,2);
 }
 
@@ -87,7 +87,7 @@ void calculate_distance(struct DA* da)
             if(longest_distnace < da->_distance_matrix[i][j]) longest_distnace = da->_distance_matrix[i][j];
         }
     }    
-    da->_A = longest_distnace + 10;
+    da->_A = longest_distnace + longest_distnace;
 
 }
 

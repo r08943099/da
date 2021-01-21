@@ -7,8 +7,8 @@
 // #include "ap_fixed.h"
 
 using namespace std;
-#define citysize 22
-#define iteration 500  //for each setting
+#define citysize 4
+#define iteration 100  //for each setting
 #define repeat    10  //for repeat this code
 #define replicaNum 1000
 #define beta 0.00001
